@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT | 5000;
 
@@ -86,6 +86,78 @@ async function run() {
             console.log("getincomplete route is not woking properly");
         }
     });
+
+    app.post("/modaldatapost", async(req,res)=>{
+        const data = req.body;
+        if(data.tittle == "incomplete"){
+            const finddata = await incomplete.findOne({_id: new ObjectId(data.id)});
+            const updateDoc = {
+                $set:{
+                    member: finddata.member+1,
+                    Message: finddata.Message+1,
+                    attachments: finddata.attachments+1
+                }
+            };
+            const updateData = await incomplete.updateOne({_id: new ObjectId(data.id)},updateDoc, {upsert:true});
+            res.send(updateData);
+
+        }else if(data.tittle == "completed"){
+            const finddata = await completed.findOne({_id: new ObjectId(data.id)});
+            const updateDoc = {
+                $set:{
+                    member: finddata.member+1,
+                    Message: finddata.Message+1,
+                    attachments: finddata.attachments+1
+                }
+            };
+            const updateData = await completed.updateOne({_id: new ObjectId(data.id)},updateDoc, {upsert:true});
+            res.send(updateData);
+        }else if(data.tittle == "doing"){
+            const finddata = await doing.findOne({_id: new ObjectId(data.id)});
+            const updateDoc = {
+                $set:{
+                    member: finddata.member+1,
+                    Message: finddata.Message+1,
+                    attachments: finddata.attachments+1
+                }
+            };
+            const updateData = await doing.updateOne({_id: new ObjectId(data.id)},updateDoc, {upsert:true});
+            res.send(updateData);
+        }else if(data.tittle == "overday"){
+            const finddata = await overday.findOne({_id: new ObjectId(data.id)});
+            const updateDoc = {
+                $set:{
+                    member: finddata.member+1,
+                    Message: finddata.Message+1,
+                    attachments: finddata.attachments+1
+                }
+            };
+            const updateData = await overday.updateOne({_id: new ObjectId(data.id)},updateDoc, {upsert:true});
+            res.send(updateData);
+        }else if(data.tittle == "todo"){
+            const finddata = await todo.findOne({_id: new ObjectId(data.id)});
+            const updateDoc = {
+                $set:{
+                    member: finddata.member+1,
+                    Message: finddata.Message+1,
+                    attachments: finddata.attachments+1
+                }
+            };
+            const updateData = await todo.updateOne({_id: new ObjectId(data.id)},updateDoc, {upsert:true});
+            res.send(updateData);
+        }else{
+            const finddata = await underReview.findOne({_id: new ObjectId(data.id)});
+            const updateDoc = {
+                $set:{
+                    member: finddata.member+1,
+                    Message: finddata.Message+1,
+                    attachments: finddata.attachments+1
+                }
+            };
+            const updateData = await underReview.updateOne({_id: new ObjectId(data.id)},updateDoc, {upsert:true});
+            res.send(updateData);
+        };
+    })
 
 
 
